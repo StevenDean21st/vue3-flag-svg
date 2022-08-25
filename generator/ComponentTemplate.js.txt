@@ -1,0 +1,5 @@
+import [[NAME]] from './[[NAME]].vue'
+[[NAME]].install = app => {
+  app.component([[NAME]].name, [[NAME]])
+}
+export default [[NAME]];
