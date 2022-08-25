@@ -1,0 +1,11 @@
+<template>
+  [[TARGET]]
+</template>
+
+<script setup>
+import "../style/flag.css"
+</script>
+
+<style scoped>
+
+</style>
