@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import "../style/flag.css"
+import "../../style/flag.css"
 </script>
 
 <style scoped>
