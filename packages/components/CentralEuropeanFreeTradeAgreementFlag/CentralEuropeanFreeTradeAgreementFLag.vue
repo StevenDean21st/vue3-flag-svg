@@ -1,5 +1,6 @@
 <template>
-  <img class="__flag-svg" src="../../assets/cefta.svg" alt="CentralEuropeanFreeTradeAgreement Flag" title="Central European Free Trade Agreement">
+  <img class="__flag-svg" src="../../assets/cefta.svg" alt="CentralEuropeanFreeTradeAgreement Flag"
+       title="Central European Free Trade Agreement">
 </template>
 
 <script setup>

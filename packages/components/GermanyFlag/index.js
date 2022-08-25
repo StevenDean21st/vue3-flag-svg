@@ -1,5 +1,6 @@
 import GermanyFlag from './GermanyFlag.vue'
+
 GermanyFlag.install = app => {
-  app.component(GermanyFlag.name, GermanyFlag)
+    app.component(GermanyFlag.name, GermanyFlag)
 }
 export default GermanyFlag;

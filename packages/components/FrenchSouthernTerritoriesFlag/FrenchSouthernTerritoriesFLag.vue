@@ -1,5 +1,6 @@
 <template>
-  <img class="__flag-svg" src="../../assets/tf.svg" alt="FrenchSouthernTerritories Flag" title="French Southern Territories">
+  <img class="__flag-svg" src="../../assets/tf.svg" alt="FrenchSouthernTerritories Flag"
+       title="French Southern Territories">
 </template>
 
 <script setup>

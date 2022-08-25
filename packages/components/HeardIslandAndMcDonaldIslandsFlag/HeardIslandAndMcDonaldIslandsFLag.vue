@@ -1,5 +1,6 @@
 <template>
-  <img class="__flag-svg" src="../../assets/hm.svg" alt="HeardIslandAndMcDonaldIslands Flag" title="Heard Island And McDonald Islands">
+  <img class="__flag-svg" src="../../assets/hm.svg" alt="HeardIslandAndMcDonaldIslands Flag"
+       title="Heard Island And McDonald Islands">
 </template>
 
 <script setup>

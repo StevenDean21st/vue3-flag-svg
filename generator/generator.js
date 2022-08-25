@@ -1,3 +1,5 @@
+// Copyright (c) 2022 Steven Dean (StevenDean21st)
+
 import {CountryList} from "./country.js";
 import * as path from "path"
 import {
