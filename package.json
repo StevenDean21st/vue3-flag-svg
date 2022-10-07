@@ -3,9 +3,9 @@
   "scripts": {
     "install-all": "pnpm i -r",
     "test": "pnpm run -F test_field test",
-    "build": "pnpm run -F vue3-flag-svg build",
     "format": "prettier --write .",
-    "prepublish": "pnpm run build && pnpm run format && nrm use npm",
+    "build": "pnpm run -F vue3-flag-svg build && pnpm run format",
+    "prepublish": "nrm use npm",
     "publish": "pnpm run prepublish && pnpm publish -F vue3-flag-svg && pnpm run postpublish",
     "postpublish": "nrm use taobao"
   },
