@@ -5,7 +5,7 @@
     "email": "stevendean@foxmail.com"
   },
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "index.js",
   "keywords": [
