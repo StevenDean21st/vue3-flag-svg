@@ -22,7 +22,8 @@
     "build": "pnpm run prebuild && vite build"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "vue": "^3.2.37"

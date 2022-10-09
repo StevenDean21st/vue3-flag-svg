@@ -264,7 +264,6 @@ import WesternSaharaFlag from "./components/WesternSaharaFlag/index.js";
 import YemenFlag from "./components/YemenFlag/index.js";
 import ZambiaFlag from "./components/ZambiaFlag/index.js";
 import ZimbabweFlag from "./components/ZimbabweFlag/index.js";
-
 const components = [
   AfghanistanFlag,
   AlandIslandsFlag,
