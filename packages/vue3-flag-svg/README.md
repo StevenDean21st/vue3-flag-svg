@@ -29,7 +29,7 @@ npm install vue3-flag-svg
 
 ```js
 //main.ts or main.js
-import {createApp} from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import Vue3FlagSVG from "packages/vue3-flag-svg/index";
 
@@ -42,13 +42,12 @@ app.mount("#app");
 ### Manually import
 
 ```vue
-
 <template>
-  <ChinaFlag/>
-  <RussiaFlag/>
-  <UnitedStatesofAmericaFlag/>
-  <UnitedKingdomFlag/>
-  <FranceFlag/>
+  <ChinaFlag style="width: 100px"/>
+  <RussiaFlag style="width: 100px"/>
+  <UnitedStatesofAmericaFlag style="width: 100px"/>
+  <UnitedKingdomFlag style="width: 100px"/>
+  <FranceFlag style="width: 100px"/>
 </template>
 
 <script setup>
@@ -64,10 +63,24 @@ import {
 <style>
 /* 
   * the flag component only includes a <img> element
-  * with default 100% width and auto height
-  * customize it as you wish 
+  * with default inline 'width: 100%; height: auto;' style
 */
 </style>
+```
+
+### Dynamic component
+
+```vue
+<template>
+  <component :is="FlagCodeName.cn.component" style="width: 100px"></component>
+  <component :is="FlagCodeName['gb-sct'].component" style="width: 100px"></component>
+  <component v-for="flag of FlagCodeName" style="width: 100px" :is="flag.component"/>
+</template>
+
+<script setup>
+import { FlagCodeName } from "vue3-flag-svg/manifest";
+</script>
+<style scoped></style>
 ```
 
 ## Generator Icons
