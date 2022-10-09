@@ -4,6 +4,8 @@
 /.gitignore
 /generator/
 /node_modules/
+/replace.d.ts
+/define.js
 
 ### Node template
 # Logs

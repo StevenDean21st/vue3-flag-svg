@@ -5,6 +5,7 @@ packages/**/lib/**
 projects/**/dist/**
 projects/**/build/**
 projects/**/lib/**
+packages/vue3-flag-svg/generator/template/**
 
 ### VisualStudioCode template
 .vscode/*
