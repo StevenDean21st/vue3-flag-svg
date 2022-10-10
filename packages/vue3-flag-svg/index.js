@@ -1,3 +1,5 @@
+import { ComponentCodeName, CountryCodeName } from "./manifest/index.js";
+
 import AfghanistanFlag from "./components/AfghanistanFlag/index.js";
 import AlandIslandsFlag from "./components/AlandIslandsFlag/index.js";
 import AlbaniaFlag from "./components/AlbaniaFlag/index.js";
@@ -814,3 +816,4 @@ export {
   ZambiaFlag,
   ZimbabweFlag,
 };
+export { ComponentCodeName, CountryCodeName };

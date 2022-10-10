@@ -6,6 +6,7 @@ import {
   copyFileSync,
   readFileSync,
   writeFile,
+  writeFileSync,
   mkdirSync,
   rmdirSync,
   rmSync,
@@ -24,7 +25,7 @@ const __monorepoRoot = path.resolve(__dirname, "../../../");
 const __packageRoot = path.resolve(__dirname, "../");
 const __templateRoot = path.resolve(__packageRoot, "./generator/template");
 
-// test template
+// test
 const TEST_SFC_TEMPLATE_PATH = path.resolve(
   __templateRoot,
   "./TestTemplate.vue"
@@ -33,6 +34,11 @@ const TEST_FILE_DIST_PATH = path.resolve(
   __monorepoRoot,
   "./projects/test_field/src/App.vue"
 );
+const TEST_PUBLIC_PATH = path.resolve(
+  __monorepoRoot,
+  "./projects/test_field/public"
+);
+const TEST_PUBLIC_FLAGS_PATH = path.resolve(TEST_PUBLIC_PATH, "./flags");
 
 // assets
 const FLAG_ICON_ROOT_PATH = path.resolve(
@@ -43,10 +49,19 @@ const ICON_4X3_PATH = path.join(FLAG_ICON_ROOT_PATH, "4x3");
 
 // manifest
 const MANIFEST_DIST_PATH = path.resolve(__packageRoot, "./manifest");
-const MANIFEST_TEMPLATE_PATH = path.resolve(
+const COMPONENTS_MANIFEST_TEMPLATE_PATH = path.resolve(
   __templateRoot,
-  "./ManifestTemplate.js"
+  "./ComponentsManifestTemplate.js"
 );
+const COUNTRIES_MANIFEST_TEMPLATE_PATH = path.resolve(
+  __templateRoot,
+  "./CountriesManifestTemplate.js"
+);
+const MANIFEST_INDEX_TEMPLATE_PATH = path.resolve(
+  __templateRoot,
+  "./ManifestIndexTemplate.js"
+);
+const MANIFEST_INDEX_DIST_PATH = path.resolve(MANIFEST_DIST_PATH, "./index.js");
 
 // flag template
 const SFC_DIST_PATH = path.resolve(__packageRoot, "./components/");
@@ -58,8 +73,11 @@ const EXPORT_TEMPLATE_PATH = path.resolve(
   __templateRoot,
   "./ComponentTemplate.js"
 );
-const INDEX_TEMPLATE_PATH = path.resolve(__templateRoot, "./IndexTemplate.js");
-const INDEX_DIST_PATH = path.resolve(__packageRoot, "./index.js");
+const COMPONENTS_INDEX_TEMPLATE_PATH = path.resolve(
+  __templateRoot,
+  "./IndexTemplate.js"
+);
+const COMPONENTS_INDEX_DIST_PATH = path.resolve(__packageRoot, "./index.js");
 const TEMPLATE_ASSETS_PATH = path.resolve(__packageRoot, "./assets");
 
 const SFC_TEMPLATE_TARGET = define.__SFC_TEMPLATE_TARGET__;
@@ -70,19 +88,25 @@ const TEST_TARGET = define.__TEST_TARGET__;
 const H_TEST_TARGET = define.__H_TEST_TARGET__;
 const H_TEST_TEMPLATE_TARGET = define.__H_TEST_TEMPLATE_TARGET__;
 const TEST_IMPORT = define.__TEST_IMPORT__;
-const MANIFEST_TARGET = define.__MANIFEST_TARGET__;
+const COMPONENTS_MANIFEST_TARGET = define.__COMPONENTS_MANIFEST_TARGET__;
+const COUNTRIES_MANIFEST_TARGET = define.__COUNTRIES_MANIFEST_TARGET__;
 
 // templates
-const template = readFileSync(SFC_TEMPLATE_PATH).toString();
-const exportIndex = readFileSync(EXPORT_TEMPLATE_PATH).toString();
-const index = readFileSync(INDEX_TEMPLATE_PATH).toString();
+const sfcTemplate = readFileSync(SFC_TEMPLATE_PATH).toString();
+const exportIndexTemplate = readFileSync(EXPORT_TEMPLATE_PATH).toString();
+const indexTemplate = readFileSync(COMPONENTS_INDEX_TEMPLATE_PATH).toString();
+const testFileTemplate = readFileSync(TEST_SFC_TEMPLATE_PATH).toString();
+const componentsManifestTemplate = readFileSync(
+  COMPONENTS_MANIFEST_TEMPLATE_PATH
+).toString();
+const countriesManifestTemplate = readFileSync(
+  COUNTRIES_MANIFEST_TEMPLATE_PATH
+).toString();
 
 // country code references
-const countries = CountryList;
-let length = countries.length;
+const countryList = CountryList;
+let length = countryList.length;
 let progress = 0;
-
-const testFile = readFileSync(TEST_SFC_TEMPLATE_PATH).toString();
 
 const getSvgPath = (assetsDir, code) => path.join(assetsDir, code + ".svg");
 
@@ -111,8 +135,14 @@ const ProcessTemplate = () => {
   if (existsSync(SFC_DIST_PATH)) {
     emptyDirSync(SFC_DIST_PATH);
     rmdirSync(SFC_DIST_PATH);
+  }
+
+  if (existsSync(TEMPLATE_ASSETS_PATH)) {
     emptyDirSync(TEMPLATE_ASSETS_PATH);
     rmdirSync(TEMPLATE_ASSETS_PATH);
+  }
+
+  if (existsSync(MANIFEST_DIST_PATH)) {
     emptyDirSync(MANIFEST_DIST_PATH);
     rmdirSync(MANIFEST_DIST_PATH);
   }
@@ -123,9 +153,10 @@ const ProcessTemplate = () => {
 
   let indexImports = "";
   let indexExports = "";
-  let manifests = "";
+  let components = "";
+  let countries = "";
 
-  for (let { code, name: enName } of countries) {
+  for (let { code, name: enName } of countryList) {
     const rawName = enName;
     enName = replaceNonCharacter(enName);
 
@@ -140,75 +171,97 @@ const ProcessTemplate = () => {
     );
 
     // generate template, attention to assetsDir, must be components relative path
-    let tmp = template.replace(
+    let template = sfcTemplate.replace(
       SFC_TEMPLATE_TARGET,
       toHTML(enName, code.toLowerCase(), rawName, "../../assets")
     );
 
     // generate export
-    let index = exportIndex.replaceAll(EXPORT_NAME, enName + "Flag");
+    let index = exportIndexTemplate.replaceAll(EXPORT_NAME, enName + "Flag");
 
     // generate index imports and exports
     indexImports += `import ${enName}Flag from "./components/${enName}Flag/index.js";\n`;
     indexExports += `${enName}Flag,\n`;
 
     // write manifest
-    manifests += `'${code}':{enName:'${enName}',component:Components.${enName}Flag},`;
+    components += `'${code}':{enName:'${enName}',component:Components.${enName}Flag},`;
+    countries += `'${code}':{enName:'${enName}',asset:'${code}.svg'},`;
 
     // write template file
-    writeFile(path.join(dist, enName + "FLag.vue"), tmp, () => {
-      // write export
-      writeFile(path.join(dist, "index.js"), index, () => {
-        progress++;
-        console.log(
-          `${rawName} => ${enName + "Flag.vue"} progress:`,
-          progress,
-          "/",
-          length
-        );
-        if (progress === length) console.log("Done.");
-      });
-    });
+    writeFileSync(path.join(dist, enName + "FLag.vue"), template);
+    // write export
+    writeFileSync(path.join(dist, "index.js"), index);
+
+    progress++;
+    console.log(
+      `${rawName} => ${enName + "Flag.vue"} progress:`,
+      progress,
+      "/",
+      length
+    );
+    if (progress === length) console.log("Components generated");
   }
 
   // write manifest
-  writeFile(
-    path.join(MANIFEST_DIST_PATH, "index.js"),
-    readFileSync(MANIFEST_TEMPLATE_PATH)
-      .toString()
-      .replaceAll(MANIFEST_TARGET, manifests),
-    () => {
-      console.log("Manifest done.");
-    }
+  writeFileSync(
+    path.join(MANIFEST_DIST_PATH, "components.js"),
+    componentsManifestTemplate.replaceAll(
+      COMPONENTS_MANIFEST_TARGET,
+      components
+    )
   );
+  console.log("Components manifest generated.");
+
+  writeFileSync(
+    path.join(MANIFEST_DIST_PATH, "countries.js"),
+    countriesManifestTemplate.replaceAll(COUNTRIES_MANIFEST_TARGET, countries)
+  );
+  console.log("Countries manifest generated.");
+  copyFileSync(MANIFEST_INDEX_TEMPLATE_PATH, MANIFEST_INDEX_DIST_PATH);
+  console.log("Manifest entry index.js generated.");
 
   // write index imports and exports
-  let indexJs = index
+  let indexJs = indexTemplate
     .replaceAll(INDEX_EXPORTS_TARGET, indexExports)
     .replace(INDEX_IMPORTS_TARGET, indexImports);
-  writeFile(INDEX_DIST_PATH, indexJs, () => {
-    console.log("index.js has been generated.");
-  });
+  writeFileSync(COMPONENTS_INDEX_DIST_PATH, indexJs);
+  console.log("Components entry index.js generated.");
 };
 
 const GenerateTest = () => {
   let templates = "";
-  let hTemplates = "";
+  // let hTemplates = "";
   let imports = "";
-  for (let { code, name: enName } of countries) {
+  for (let { code, name: enName } of countryList) {
     enName = replaceNonCharacter(enName);
     templates += `<${enName}Flag style="width: 100px"/>` + "\n";
-    hTemplates +=
-      `<component :is="FlagCodeName['${code}'].component" style="width: 100px"/>` +
-      "\n";
+    // hTemplates +=
+    //     `<component :is="FlagCodeName['${code}'].component" style="width: 100px"/>` +
+    //     "\n";
     imports += `import {${enName}Flag} from "${PACKAGE_NAME}"` + "\n";
   }
-  let res = testFile
-    .replace(H_TEST_TEMPLATE_TARGET, hTemplates)
+  let res = testFileTemplate
     .replace(TEST_TARGET, templates)
     .replace(TEST_IMPORT, imports);
+  // .replace(H_TEST_TEMPLATE_TARGET, hTemplates);
+
   rmSync(TEST_FILE_DIST_PATH, { force: true });
-  writeFile(TEST_FILE_DIST_PATH, res, () => console.log("Done."));
+  writeFileSync(TEST_FILE_DIST_PATH, res);
+  console.log("Test generated.");
+
+  // copy assets
+  if (existsSync(TEST_PUBLIC_FLAGS_PATH)) {
+    emptyDirSync(TEST_PUBLIC_FLAGS_PATH);
+    rmdirSync(TEST_PUBLIC_FLAGS_PATH);
+  }
+  mkdirSync(TEST_PUBLIC_FLAGS_PATH);
+  for (let { code } of countryList) {
+    copyFileSync(
+      getSvgPath(ICON_4X3_PATH, code),
+      TEST_PUBLIC_FLAGS_PATH + "/" + code + ".svg"
+    );
+  }
+  console.log("Assets copied.");
 };
 
 ProcessTemplate();

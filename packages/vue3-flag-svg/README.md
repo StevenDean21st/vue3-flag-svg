@@ -43,11 +43,11 @@ app.mount("#app");
 
 ```vue
 <template>
-  <ChinaFlag style="width: 100px"/>
-  <RussiaFlag style="width: 100px"/>
-  <UnitedStatesofAmericaFlag style="width: 100px"/>
-  <UnitedKingdomFlag style="width: 100px"/>
-  <FranceFlag style="width: 100px"/>
+  <ChinaFlag style="width: 100px" />
+  <RussiaFlag style="width: 100px" />
+  <UnitedStatesofAmericaFlag style="width: 100px" />
+  <UnitedKingdomFlag style="width: 100px" />
+  <FranceFlag style="width: 100px" />
 </template>
 
 <script setup>
@@ -73,8 +73,15 @@ import {
 ```vue
 <template>
   <component :is="FlagCodeName.cn.component" style="width: 100px"></component>
-  <component :is="FlagCodeName['gb-sct'].component" style="width: 100px"></component>
-  <component v-for="flag of FlagCodeName" style="width: 100px" :is="flag.component"/>
+  <component
+    :is="FlagCodeName['gb-sct'].component"
+    style="width: 100px"
+  ></component>
+  <component
+    v-for="flag of FlagCodeName"
+    style="width: 100px"
+    :is="flag.component"
+  />
 </template>
 
 <script setup>

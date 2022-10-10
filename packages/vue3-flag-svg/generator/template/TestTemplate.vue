@@ -2,13 +2,14 @@
   <h3>Static:</h3>
   __TEST_TARGET__
   <h3>Dynamic:</h3>
-  __H_TEST_TEMPLATE_TARGET__
-  <h3>v-for</h3>
-  <component v-for="flag of FlagCodeName" style="width: 100px" :is="flag.component"/>
+  <component v-for="flag of ComponentCodeName" style="width: 100px" :is="flag.component"/>
+  <h3>v-for on demand manual public assets:</h3>
+  <img v-for="flag of CountryCodeName" :src="'/flags/'+flag.asset" :alt="flag.enName">
 </template>
 
 <script setup>
-import { FlagCodeName } from "vue3-flag-svg/manifest";
+import {ComponentCodeName, CountryCodeName} from "vue3-flag-svg";
+
 __TEST_IMPORT__;
 </script>
 <style scoped></style>
