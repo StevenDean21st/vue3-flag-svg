@@ -18,4 +18,3 @@ export default {
 };
 
 export {__INDEX_EXPORTS_TARGET__};
-export {ComponentCodeName, CountryCodeName};

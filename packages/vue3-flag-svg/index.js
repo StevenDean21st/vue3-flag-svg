@@ -816,4 +816,3 @@ export {
   ZambiaFlag,
   ZimbabweFlag,
 };
-export { ComponentCodeName, CountryCodeName };

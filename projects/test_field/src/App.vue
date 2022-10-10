@@ -278,11 +278,12 @@
     v-for="flag of CountryCodeName"
     :src="'/flags/' + flag.asset"
     :alt="flag.enName"
+    style="width: 100px"
   />
 </template>
 
 <script setup>
-import { ComponentCodeName, CountryCodeName } from "vue3-flag-svg";
+import { ComponentCodeName, CountryCodeName } from "vue3-flag-svg/manifest";
 
 import { AfghanistanFlag } from "vue3-flag-svg";
 import { AlandIslandsFlag } from "vue3-flag-svg";
