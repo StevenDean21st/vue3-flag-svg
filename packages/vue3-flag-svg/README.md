@@ -72,22 +72,56 @@ import {
 
 ```vue
 <template>
-  <component :is="FlagCodeName.cn.component" style="width: 100px"></component>
   <component
-    :is="FlagCodeName['gb-sct'].component"
+    :is="ComponentCodeName.cn.component"
     style="width: 100px"
   ></component>
   <component
-    v-for="flag of FlagCodeName"
+    :is="ComponentCodeName['gb-sct'].component"
+    style="width: 100px"
+  ></component>
+  <component
+    v-for="flag of ComponentCodeName"
     style="width: 100px"
     :is="flag.component"
   />
 </template>
 
 <script setup>
-import { FlagCodeName } from "vue3-flag-svg/manifest";
+import { ComponentCodeName } from "vue3-flag-svg/manifest";
 </script>
 <style scoped></style>
+```
+
+### Use static assets
+
+If you don't want to use vue components, just manually move svg assets in `/assets` to your web server public direct.
+
+The manifest `/manifest/countries.js` provides all assets' file name and its country code name:
+
+```js
+export const CountryCodeName = {
+  af: { enName: "Afghanistan", asset: "af.svg" },
+  // ...
+};
+```
+
+May use like this:
+
+```vue
+<template>
+  <!-- if your server hold static assets in '/flags' -->
+  <img
+    v-for="flag of CountryCodeName"
+    :src="'/flags/' + flag.asset"
+    :alt="flag.enName"
+    style="width: 100px"
+  />
+</template>
+
+<script setup>
+import { CountryCodeName } from "vue3-flag-svg/manifest";
+</script>
 ```
 
 ## Generator Icons
