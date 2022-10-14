@@ -184,8 +184,8 @@ const ProcessTemplate = () => {
     indexExports += `${enName}Flag,\n`;
 
     // write manifest
-    components += `'${code}':{enName:'${enName}',component:Components.${enName}Flag},`;
-    countries += `'${code}':{enName:'${enName}',asset:'${code}.svg'},`;
+    components += `"${code}":{enName:"${rawName}",component:Components.${enName}Flag},`;
+    countries += `"${code}":{enName:"${rawName}",asset:'${code}.svg'},`;
 
     // write template file
     writeFileSync(path.join(dist, enName + "FLag.vue"), template);
